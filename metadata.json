@@ -1,0 +1,6 @@
+{
+  "name": "WorkPulse - Job Search Platform",
+  "description": "A complete digital employment platform featuring enterprise announcement management panels, comprehensive user settings and job search preferences, real-time notifications, location filters, one-click apply, application tracking, messaging, admin management, and AI career tools.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
