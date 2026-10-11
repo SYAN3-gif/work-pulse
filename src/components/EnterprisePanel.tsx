@@ -23,7 +23,8 @@ import {
   AlertCircle,
   Share2,
   Check,
-  ChevronDown
+  ChevronDown,
+  Server
 } from 'lucide-react';
 
 interface EnterprisePanelProps {
@@ -38,6 +39,7 @@ interface EnterprisePanelProps {
   onBroadcastAnnouncement: (ann: EnterpriseAnnouncement) => void;
   onViewPublicPage: (enterprise: Enterprise) => void;
   onUpdateEnterpriseProfile?: (enterpriseId: string, updates: Partial<Enterprise>) => void;
+  onOpenLaragonModal?: () => void;
 }
 
 export const EnterprisePanel: React.FC<EnterprisePanelProps> = ({
@@ -52,6 +54,7 @@ export const EnterprisePanel: React.FC<EnterprisePanelProps> = ({
   onBroadcastAnnouncement,
   onViewPublicPage,
   onUpdateEnterpriseProfile,
+  onOpenLaragonModal,
 }) => {
   // Current active enterprise being managed
   const currentEnterprise = useMemo(() => {
@@ -342,6 +345,19 @@ export const EnterprisePanel: React.FC<EnterprisePanelProps> = ({
               <ExternalLink className="w-3.5 h-3.5" />
               <span>Public Page</span>
             </button>
+
+            {/* Laragon Local Testing Button */}
+            {onOpenLaragonModal && (
+              <button
+                id="btn-enterprise-laragon-hub"
+                onClick={onOpenLaragonModal}
+                className="px-3.5 py-2.5 rounded-xl border border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 hover:bg-blue-100 dark:hover:bg-blue-900/60 font-bold text-xs flex items-center gap-1.5 transition cursor-pointer"
+                title="Open Laragon & Localhost Hub for local prototyping & testing"
+              >
+                <Server className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+                <span>Laragon Local Testing</span>
+              </button>
+            )}
 
             {/* New Announcement Button */}
             <button

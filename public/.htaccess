@@ -1,0 +1,32 @@
+# Laragon / Apache SPA Routing & Configuration for WorkPulse
+# Automatically copied to dist/ on build
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+  
+  # If requested resource is an existing file, folder, or symlink, serve it directly
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d [OR]
+  RewriteCond %{REQUEST_FILENAME} -l
+  RewriteRule ^ - [L]
+
+  # Otherwise redirect all requests to index.html for Single Page Application routing
+  RewriteRule ^ index.html [L]
+</IfModule>
+
+# MIME types for modern web assets in Laragon Apache
+<IfModule mod_mime.c>
+  AddType text/javascript .js
+  AddType text/javascript .mjs
+  AddType text/css .css
+  AddType image/svg+xml .svg
+  AddType application/json .json
+  AddType font/woff2 .woff2
+</IfModule>
+
+# Enable Cross-Origin Resource Sharing (CORS) for local development & API calls
+<IfModule mod_headers.c>
+  Header set Access-Control-Allow-Origin "*"
+  Header set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS, PATCH"
+  Header set Access-Control-Allow-Headers "Content-Type, Authorization, X-Requested-With, Accept, Origin"
+</IfModule>

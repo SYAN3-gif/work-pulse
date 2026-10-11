@@ -28,7 +28,8 @@ import {
   ArrowRight,
   Shield,
   KeyRound,
-  FileText
+  FileText,
+  Server
 } from 'lucide-react';
 import { UserSettings, JobSearchStatus, UserProfile } from '../types/job';
 import { ActiveSession, INITIAL_ACTIVE_SESSIONS } from '../data/mockSettings';
@@ -43,6 +44,7 @@ interface SettingsPageProps {
   onUpdateUserProfile?: (updatedProfile: Partial<UserProfile>) => void;
   onResetSettingsToDefault: () => void;
   onNotify: (title: string, message: string) => void;
+  onOpenLaragonModal?: () => void;
 }
 
 type SettingsSection = 'job_search' | 'privacy' | 'notifications' | 'account_security' | 'display' | 'data';
@@ -56,6 +58,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
   onUpdateUserProfile,
   onResetSettingsToDefault,
   onNotify,
+  onOpenLaragonModal,
 }) => {
   const [activeSection, setActiveSection] = useState<SettingsSection>('job_search');
   const [localSettings, setLocalSettings] = useState<UserSettings>(settings);
@@ -347,6 +350,29 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
                 </button>
               );
             })}
+
+            {onOpenLaragonModal && (
+              <div className="pt-2 border-t border-slate-100 dark:border-slate-700/60">
+                <button
+                  type="button"
+                  id="settings-open-laragon-btn"
+                  onClick={onOpenLaragonModal}
+                  className="w-full text-left p-3 rounded-2xl bg-linear-to-r from-blue-50 to-indigo-50 dark:from-blue-950/40 dark:to-indigo-950/40 border border-blue-200 dark:border-blue-800/80 hover:border-blue-300 dark:hover:border-blue-700 transition flex items-center gap-3 group cursor-pointer"
+                >
+                  <div className="p-2 rounded-xl bg-blue-600 text-white shadow-xs group-hover:scale-105 transition-transform">
+                    <Server className="w-4 h-4" />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-xs font-bold text-blue-900 dark:text-blue-300">
+                      Laragon &amp; Localhost Hub
+                    </p>
+                    <p className="text-[11px] text-blue-600/80 dark:text-blue-400/80 line-clamp-1 mt-0.5">
+                      Apache, Nginx &amp; Windows testing
+                    </p>
+                  </div>
+                </button>
+              </div>
+            )}
           </div>
 
           {/* Quick Profile Summary Card */}

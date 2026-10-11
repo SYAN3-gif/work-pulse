@@ -44,7 +44,10 @@ import { NotificationToastContainer } from './components/NotificationToast';
 import { JobMapView } from './components/JobMapView';
 import { EnterprisePage, EnterpriseDirectory } from './components/EnterprisePage';
 import { EnterprisePanel } from './components/EnterprisePanel';
+import { LaragonModal } from './components/LaragonModal';
+import { getLaragonEnvironment } from './utils/laragonHelper';
 import { playNotificationSound } from './utils/audio';
+import { Server } from 'lucide-react';
 
 export default function App() {
   // Core application state
@@ -139,7 +142,18 @@ export default function App() {
   const [jobForOneClickApply, setJobForOneClickApply] = useState<Job | null>(null);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState<boolean>(false);
   const [isAISuiteOpen, setIsAISuiteOpen] = useState<boolean>(false);
+  const [isLaragonModalOpen, setIsLaragonModalOpen] = useState<boolean>(false);
   const [contextJobForAI, setContextJobForAI] = useState<Job | null>(INITIAL_JOBS[0]);
+
+  // Check URL parameter to auto-open Laragon Hub if requested
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      if (params.has('laragon') || params.has('localhost_test') || params.has('setup')) {
+        setIsLaragonModalOpen(true);
+      }
+    }
+  }, []);
 
   // Handle toast auto-dismiss
   const dismissToast = (id: string) => {
@@ -617,6 +631,7 @@ export default function App() {
         onOpenAISuite={() => setIsAISuiteOpen(true)}
         isDarkMode={isDarkMode}
         onToggleDarkMode={handleToggleDarkMode}
+        onOpenLaragonModal={() => setIsLaragonModalOpen(true)}
       />
 
       {/* Main Content Area */}
@@ -646,6 +661,7 @@ export default function App() {
             onBroadcastAnnouncement={handleBroadcastAnnouncement}
             onViewPublicPage={handleViewEnterprisePublicPage}
             onUpdateEnterpriseProfile={handleUpdateEnterpriseProfile}
+            onOpenLaragonModal={() => setIsLaragonModalOpen(true)}
           />
         ) : (
           <>
@@ -792,6 +808,7 @@ export default function App() {
                     read: false,
                   });
                 }}
+                onOpenLaragonModal={() => setIsLaragonModalOpen(true)}
               />
             )}
           </>
@@ -850,6 +867,22 @@ export default function App() {
         }}
       />
 
+      {/* Laragon & Localhost Testing Hub Modal */}
+      <LaragonModal
+        isOpen={isLaragonModalOpen}
+        onClose={() => setIsLaragonModalOpen(false)}
+        onSimulateNotification={(title, message) => {
+          triggerNotification({
+            id: `laragon-sim-${Date.now()}`,
+            title,
+            message,
+            category: 'system',
+            timestamp: 'Just now',
+            read: false,
+          });
+        }}
+      />
+
       {/* Floating Real-Time Notifications Toast Container */}
       <NotificationToastContainer
         notifications={toasts}
@@ -878,6 +911,13 @@ export default function App() {
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
               Real-Time Push Gateway: Active
             </span>
+            <button
+              onClick={() => setIsLaragonModalOpen(true)}
+              className="text-blue-600 dark:text-blue-400 hover:underline font-semibold flex items-center gap-1 transition cursor-pointer"
+            >
+              <Server className="w-3.5 h-3.5" />
+              Laragon &amp; Localhost Hub
+            </button>
             <button
               onClick={() => setIsAuthModalOpen(true)}
               className="hover:text-blue-600 dark:text-blue-400 transition font-medium"
